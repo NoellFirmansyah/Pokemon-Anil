@@ -80,15 +80,17 @@ jobs:
         run: |
           chmod +x get_deps.sh
           ./get_deps.sh
-          echo "=== Checking libiconv ==="
-if [ -f libiconv/configure ]; then
-  echo "OK: libiconv/configure ditemukan"
-else
-  echo "ERROR: libiconv/configure tidak ditemukan"
-  echo "Isi folder libiconv:"
-  ls -la libiconv || true
-  exit 1
-fi
+
+          echo "=== Checking libiconv==="
+          if [ -f libiconv/configure ]; then
+            echo "OK: libiconv/configure ditemukan"
+          else
+            echo "ERROR: libiconv/configure tidak ditemukan"
+            echo "Isi folder libiconv:"
+            ls -la libiconv || true
+            exit 1
+          fi
+          
           cd mkxp-z
           chmod +x make_xxd.sh
           ./make_xxd.sh
