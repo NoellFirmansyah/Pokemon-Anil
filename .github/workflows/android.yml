@@ -106,6 +106,15 @@ jobs:
           make -j$(nproc)
           # Asegurar mapeo de carpetas por si acaso
           if [ -d "build-arm64-v8a" ] && [ ! -d "build-arm64" ]; then ln -s build-arm64-v8a build-arm64; fi
+                # ── 8b. Compile native dependencies (armeabi-v7a) ────────────────────────
+      - name: Compile native deps — armeabi-v7a (32-bit)
+        working-directory: app/jni
+        run: |
+          make clean
+          HOST=armv7a-linux-androideabi \
+          TARGET=arm-linux-androideabi \
+          ABI=armeabi-v7a \
+          make -j$(nproc)
 
       # ── 9. Make Gradle wrapper executable ────────────────────────────────────
       - name: Grant execute permission for gradlew
