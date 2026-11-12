@@ -100,6 +100,9 @@ public:
 	int mouseY();
     int scrollV();
     bool mouseInWindow();
+    bool touchPressed(int index);
+    int touchX(int index);
+    int touchY(int index);
     
     bool getControllerConnected();
     const char *getControllerName();

@@ -698,6 +698,8 @@ struct InputPrivate
     int16_t axisStateArray[SDL_CONTROLLER_AXIS_MAX];
     int mousePos[2];
     bool mouseInWindow;
+    bool touchDown[MAX_FINGERS];
+    int touchPos[MAX_FINGERS][2];
     
     Input::ButtonCode repeating;
     int rawRepeating;
@@ -1214,6 +1216,11 @@ void Input::update()
     p->mousePos[0] = shState->eThread().mouseState.x;
     p->mousePos[1] = shState->eThread().mouseState.y;
     p->mouseInWindow = shState->eThread().mouseState.inWindow;
+    for (int i = 0; i < MAX_FINGERS; ++i) {
+        p->touchDown[i] = shState->eThread().touchState.fingers[i].down;
+        p->touchPos[i][0] = shState->eThread().touchState.fingers[i].x;
+        p->touchPos[i][1] = shState->eThread().touchState.fingers[i].y;
+    }
     
     
     /* Check for new repeating key */
@@ -1444,6 +1451,34 @@ int Input::mouseY()
     RGSSThreadData &rtData = shState->rtData();
     
     return (p->mousePos[1] - rtData.screenOffset.y) * rtData.sizeResoRatio.y;
+}
+
+bool Input::touchPressed(int index)
+{
+    if (index < 0 || index >= MAX_FINGERS)
+        return false;
+
+    return p->touchDown[index];
+}
+
+int Input::touchX(int index)
+{
+    if (index < 0 || index >= MAX_FINGERS)
+        return 0;
+
+    RGSSThreadData &rtData = shState->rtData();
+
+    return (p->touchPos[index][0] - rtData.screenOffset.x) * rtData.sizeResoRatio.x;
+}
+
+int Input::touchY(int index)
+{
+    if (index < 0 || index >= MAX_FINGERS)
+        return 0;
+
+    RGSSThreadData &rtData = shState->rtData();
+
+    return (p->touchPos[index][1] - rtData.screenOffset.y) * rtData.sizeResoRatio.y;
 }
 
 int Input::scrollV()

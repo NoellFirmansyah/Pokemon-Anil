@@ -293,6 +293,45 @@ RB_METHOD(inputMouseInWindow) {
     return rb_bool_new(shState->input().mouseInWindow());
 }
 
+RB_METHOD(inputTouchPressed) {
+    RB_UNUSED_PARAM;
+    
+    rb_check_argc(argc, 1);
+    
+    VALUE indexV;
+    rb_scan_args(argc, argv, "1", &indexV);
+    
+    int index = NUM2INT(indexV);
+    
+    return rb_bool_new(shState->input().touchPressed(index));
+}
+
+RB_METHOD(inputTouchX) {
+    RB_UNUSED_PARAM;
+    
+    rb_check_argc(argc, 1);
+    
+    VALUE indexV;
+    rb_scan_args(argc, argv, "1", &indexV);
+    
+    int index = NUM2INT(indexV);
+    
+    return rb_fix_new(shState->input().touchX(index));
+}
+
+RB_METHOD(inputTouchY) {
+    RB_UNUSED_PARAM;
+    
+    rb_check_argc(argc, 1);
+    
+    VALUE indexV;
+    rb_scan_args(argc, argv, "1", &indexV);
+    
+    int index = NUM2INT(indexV);
+    
+    return rb_fix_new(shState->input().touchY(index));
+}
+
 RB_METHOD(inputRawKeyStates) {
     RB_UNUSED_PARAM;
     
@@ -589,6 +628,9 @@ void inputBindingInit() {
     _rb_define_module_function(module, "scroll_v", inputScrollV);
     _rb_define_module_function(module, "mouse_in_window", inputMouseInWindow);
     _rb_define_module_function(module, "mouse_in_window?", inputMouseInWindow);
+    _rb_define_module_function(module, "touch_pressed?", inputTouchPressed);
+    _rb_define_module_function(module, "touch_x", inputTouchX);
+    _rb_define_module_function(module, "touch_y", inputTouchY);
     
     _rb_define_module_function(module, "raw_key_states", inputRawKeyStates);
     
