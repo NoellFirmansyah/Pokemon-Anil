@@ -2,6 +2,8 @@ name: Android Build & Release
 
 on:
   push:
+    branches:
+      - feature/floating-gear-touchscreen
     tags:
       - 'v*.*.*'
   workflow_dispatch:
@@ -178,6 +180,7 @@ jobs:
 
       # ── 14. Determine release tag ─────────────────────────────────────────────
       - name: Resolve release tag
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v')
         id: tag
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -188,6 +191,7 @@ jobs:
 
       # ── 15. Create GitHub Release and upload APK ──────────────────────────────
       - name: Create GitHub Release
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.tag.outputs.tag }}
