@@ -63,11 +63,23 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         mIsSurfaceReady = false;
     }
 
+    private void lifecycleDiag(String event) {
+        try {
+            java.io.FileWriter fw = new java.io.FileWriter(
+                "/storage/emulated/0/Pokemon Anil/surface_lifecycle.log", true);
+            fw.write(System.currentTimeMillis() + " " + event + "\n");
+            fw.close();
+        } catch (Exception e) {
+            Log.e("SDL", "Lifecycle diagnostic write failed", e);
+        }
+    }
+
     public void handlePause() {
         enableSensor(Sensor.TYPE_ACCELEROMETER, false);
     }
 
     public void handleResume() {
+        lifecycleDiag("handleResume surface=" + mWidth + "x" + mHeight + " view=" + getWidth() + "x" + getHeight());
         setFocusable(true);
         setFocusableInTouchMode(true);
         requestFocus();
@@ -84,6 +96,7 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.v("SDL", "surfaceCreated()");
+        lifecycleDiag("surfaceCreated");
         SDLActivity.onNativeSurfaceCreated();
     }
 
@@ -91,6 +104,7 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.v("SDL", "surfaceDestroyed()");
+        lifecycleDiag("surfaceDestroyed");
 
         // Transition to pause, if needed
         SDLActivity.mNextNativeState = SDLActivity.NativeState.PAUSED;
@@ -105,6 +119,7 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     public void surfaceChanged(SurfaceHolder holder,
                                int format, int width, int height) {
         Log.v("SDL", "surfaceChanged()");
+        lifecycleDiag("surfaceChanged width=" + width + " height=" + height);
 
         if (SDLActivity.mSingleton == null) {
             return;
@@ -132,6 +147,7 @@ public class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
         Log.v("SDL", "Window size: " + width + "x" + height);
         Log.v("SDL", "Device size: " + nDeviceWidth + "x" + nDeviceHeight);
+        lifecycleDiag("surfaceChanged device=" + nDeviceWidth + "x" + nDeviceHeight);
         SDLActivity.nativeSetScreenResolution(width, height, nDeviceWidth, nDeviceHeight, mDisplay.getRefreshRate());
         SDLActivity.onNativeResize();
 
