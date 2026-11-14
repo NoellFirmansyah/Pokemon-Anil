@@ -103,6 +103,12 @@ public:
     bool touchPressed(int index);
     int touchX(int index);
     int touchY(int index);
+    int touchRawX(int index);
+    int touchRawY(int index);
+    float screenOffsetX();
+    float screenOffsetY();
+    float sizeResoRatioX();
+    float sizeResoRatioY();
     
     bool getControllerConnected();
     const char *getControllerName();

@@ -1481,6 +1481,40 @@ int Input::touchY(int index)
     return (p->touchPos[index][1] - rtData.screenOffset.y) * rtData.sizeResoRatio.y;
 }
 
+int Input::touchRawX(int index)
+{
+    if (index < 0 || index >= MAX_FINGERS)
+        return 0;
+    return p->touchPos[index][0];
+}
+
+int Input::touchRawY(int index)
+{
+    if (index < 0 || index >= MAX_FINGERS)
+        return 0;
+    return p->touchPos[index][1];
+}
+
+float Input::screenOffsetX()
+{
+    return (float)shState->rtData().screenOffset.x;
+}
+
+float Input::screenOffsetY()
+{
+    return (float)shState->rtData().screenOffset.y;
+}
+
+float Input::sizeResoRatioX()
+{
+    return shState->rtData().sizeResoRatio.x;
+}
+
+float Input::sizeResoRatioY()
+{
+    return shState->rtData().sizeResoRatio.y;
+}
+
 int Input::scrollV()
  {
      return p->vScrollDistance;

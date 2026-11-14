@@ -332,6 +332,44 @@ RB_METHOD(inputTouchY) {
     return rb_fix_new(shState->input().touchY(index));
 }
 
+RB_METHOD(inputTouchRawX) {
+    RB_UNUSED_PARAM;
+    rb_check_argc(argc, 1);
+    VALUE indexV;
+    rb_scan_args(argc, argv, "1", &indexV);
+    int index = NUM2INT(indexV);
+    return rb_fix_new(shState->input().touchRawX(index));
+}
+
+RB_METHOD(inputTouchRawY) {
+    RB_UNUSED_PARAM;
+    rb_check_argc(argc, 1);
+    VALUE indexV;
+    rb_scan_args(argc, argv, "1", &indexV);
+    int index = NUM2INT(indexV);
+    return rb_fix_new(shState->input().touchRawY(index));
+}
+
+RB_METHOD(inputScreenOffsetX) {
+    RB_UNUSED_PARAM;
+    return rb_float_new(shState->input().screenOffsetX());
+}
+
+RB_METHOD(inputScreenOffsetY) {
+    RB_UNUSED_PARAM;
+    return rb_float_new(shState->input().screenOffsetY());
+}
+
+RB_METHOD(inputSizeResoRatioX) {
+    RB_UNUSED_PARAM;
+    return rb_float_new(shState->input().sizeResoRatioX());
+}
+
+RB_METHOD(inputSizeResoRatioY) {
+    RB_UNUSED_PARAM;
+    return rb_float_new(shState->input().sizeResoRatioY());
+}
+
 RB_METHOD(inputRawKeyStates) {
     RB_UNUSED_PARAM;
     
@@ -631,6 +669,12 @@ void inputBindingInit() {
     _rb_define_module_function(module, "touch_pressed?", inputTouchPressed);
     _rb_define_module_function(module, "touch_x", inputTouchX);
     _rb_define_module_function(module, "touch_y", inputTouchY);
+    _rb_define_module_function(module, "touch_raw_x", inputTouchRawX);
+    _rb_define_module_function(module, "touch_raw_y", inputTouchRawY);
+    _rb_define_module_function(module, "screen_offset_x", inputScreenOffsetX);
+    _rb_define_module_function(module, "screen_offset_y", inputScreenOffsetY);
+    _rb_define_module_function(module, "size_reso_ratio_x", inputSizeResoRatioX);
+    _rb_define_module_function(module, "size_reso_ratio_y", inputSizeResoRatioY);
     
     _rb_define_module_function(module, "raw_key_states", inputRawKeyStates);
     
